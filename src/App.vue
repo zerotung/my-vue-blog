@@ -1,21 +1,30 @@
 <template>
   <div id="app">
-    <navbar :datas="nav"></navbar>
-    <router-view></router-view>
+    <header-area :datas="nav"></header-area>
+    <transition name="fade">
+        <router-view class="wrap"></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-import Navbar from './components/Navbar';
+import Header from './components/Header';
 
 export default {
   name: 'app',
   data() {
     return {
-      nav: ['home', 'display', 'article', 'aboutme'],
+      nav: {
+        home: {},
+        article: {
+          python: {},
+        },
+        display: {},
+        aboutme: {},
+      },
     };
   },
-  components: { navbar: Navbar },
+  components: { headerArea: Header },
 };
 </script>
 
@@ -26,6 +35,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width: 100%;
 }
 
 * {
@@ -35,5 +45,17 @@ export default {
 a,a:hover{
   text-decoration:none;
   color:#333;
+}
+
+.wrap {
+  position: absolute;
+  width: 100%;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 </style>

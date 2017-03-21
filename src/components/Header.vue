@@ -1,13 +1,15 @@
 <template>
-  <nav>
-    <div class="block"></div>
-    <ul class="root-menu">
-      <router-link  v-for="(data1, key1) in datas"
-          :to="'/' + key1" :key="key1" tag="li">
-        <a> {{key1 | capitalize}} </a>
-      </router-link>
-    </ul>
-  </nav>
+  <header>
+    <nav>
+      <div class="block"></div>
+      <ul class="root-menu">
+        <router-link  v-for="(data1, key1) in datas"
+            :to="'/' + key1" :key="key1" tag="li">
+          <a> {{key1 | capitalize}} </a>
+        </router-link>
+      </ul>
+    </nav>
+  </header>
 </template>
 
 <script>
@@ -37,7 +39,13 @@
 
 <style lang="scss" scoped>
 
+  nav {
+    display: flex;
+    top: 0; left: 0; right: 0;
+  }
+
   ul.root-menu {
+    flex: 1;
     border-bottom: 1px #ddd solid;
     box-shadow: 0 0 10px #ddd;
     list-style: none;
