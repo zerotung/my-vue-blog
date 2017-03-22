@@ -1,14 +1,9 @@
 <template>
   <div class="article-show">
     <div class="body-wrap">
-      <article>
-        <h1>{{ $route.params.id }}</h1>
-        <h2>{{ $route.params.id }}</h2>
-        <h3>{{ $route.params.id }}</h3>
-        <h4>{{ $route.params.id }}</h4>
-        <h5>{{ $route.params.id }}</h5>
-        <h6>{{ $route.params.id }}</h6>
-      </article>
+      <div class="article">
+        <md-area :datas="mdData"></md-area>
+      </div>
       <div class="hot">
         
       </div>
@@ -18,8 +13,29 @@
 </template>
 
 <script>
-export default {
+import MdArea from '@/components/MdArea';
 
+export default {
+  data() {
+    return {
+      mdData: '',
+    };
+  },
+  components: {
+    mdArea: MdArea,
+  },
+  mounted() {
+    this.$http.get('/article/show/test').then((response) => {
+      // success callback
+      // console.log(response.body);
+      this.mdData = response.body.info;
+      console.log(this.mdData);
+    }, () => {
+      // error callback
+      // console.log(response);
+      this.fetchError = true;
+    });
+  },
 };
 </script>
 
@@ -33,20 +49,40 @@ export default {
     margin: 30px auto;
   }
 
-  article {
-    float: left;
-    width: 750px;
-    height: 1000px;
-    box-shadow: 0 0 10px #aaa;
-    background-color: #fff;
-    box-sizing: border-box;
-    padding: 50px 20px;
+  @media (min-width: 1000px) {
+
+    .article {
+      float: left;
+      width: 750px;
+      box-shadow: 0 0 10px #aaa;
+      background-color: #fff;
+      box-sizing: border-box;
+      padding: 20px 50px;
+    }
+    .hot {
+      width: 240px;
+      float: right;
+      background-color: #eee;
+      border: 1px #f00 solid;
+    }
   }
 
-  .hot {
-    width: 240px;
-    height: 500px;
-    float: right;
-    background-color: #eee;
+  @media (max-width: 999px) {
+
+    .article {
+      max-width: 750px;
+      box-shadow: 0 0 10px #aaa;
+      background-color: #fff;
+      box-sizing: border-box;
+      padding: 20px 50px;
+      margin: 0 auto;
+    }
+    .hot {
+      max-width: 750px;
+      background-color: #eee;
+      border: 1px #f00 solid;
+      margin: 0 auto;
+    }
   }
+
 </style>
