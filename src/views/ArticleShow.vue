@@ -29,7 +29,6 @@ export default {
       // success callback
       // console.log(response.body);
       this.mdData = response.body.info;
-      console.log(this.mdData);
     }, () => {
       // error callback
       // console.log(response);

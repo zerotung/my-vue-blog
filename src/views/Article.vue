@@ -2,7 +2,9 @@
   <div class="article">
     <div class="body-wrap">
       <div class="cards" v-if="!fetchError">
-        <card v-for="data in datas" :data="data" :key="data.title"></card>
+        <transition-group name="fade">
+          <card v-for="data in datas" :data="data" :key="data.title"></card>
+        </transition-group>
       </div><div v-else>
         远端获取数据失败
       </div>
@@ -17,7 +19,6 @@ export default {
   name: 'article',
   data() {
     return {
-      msg: 'Welcome to Article',
       datas: [
         // {
         //   title: 'test',
@@ -35,13 +36,31 @@ export default {
   mounted() {
     this.$http.get('/article/list').then((response) => {
       // success callback
-      // console.log(response.body);
-      response.body.data.forEach((x) => {
-        this.datas.push(x);
-      });
+      // console.log(response.body.data);
+      const self = this;
+
+      (() => {
+        const datas = response.body.data;
+        let i = 0;
+        const length = datas.length;
+
+        const createPromise = () => {
+          const promise = new Promise((resolve) => {
+            self.datas.push(datas[i]);
+            setTimeout(() => {
+              resolve();
+            }, 100);
+          });
+          promise.then(() => {
+            if (i + 1 < length) {
+              i += 1;
+              createPromise(i);
+            }
+          });
+        };
+        createPromise();
+      })();
     }, () => {
-      // error callback
-      // console.log(response);
       this.fetchError = true;
     });
   },
@@ -53,6 +72,7 @@ export default {
 
 .article {
   background-color: #eee;
+  min-height: 100%;
 }
 
 .card {
@@ -79,4 +99,5 @@ export default {
     margin: 0 auto;
   }
 }
+
 </style>
